@@ -10,6 +10,7 @@ const database = () => {
     });
 
     const listingTable = `CREATE TABLE IF NOT EXISTS listing (id INT NOT NULL AUTO_INCREMENT, title VARCHAR(50), picture VARCHAR(200), description VARCHAR(50),  starttime VARCHAR(50), endtime VARCHAR(50), location VARCHAR(50),  portionremaining VARCHAR(50), PRIMARY KEY(id) );`;
+    const cartTable = `CREATE TABLE IF NOT EXISTS cart (listing_id INT, portion INT, PRIMARY KEY(listing_id) );`;
     const query = "INSERT INTO listing (title, picture, description,  starttime, endtime, location,  portionremaining) SELECT * FROM (SELECT 'Chicken Rice', 'https://singaporelocalfavourites.com/wp-content/uploads/2017/11/singapore-hainanese-roasted-chicken-rice.jpg', 'Delicious chick rice', '19:00', '22:00', 'Prinsep Street', '5') AS FOO  WHERE NOT EXISTS (SELECT * FROM listing);"
 
     db.connect(function (err) {
@@ -24,7 +25,9 @@ const database = () => {
         db.query(listingTable, function (err, result, fields) {
             if (err) throw err;
         });
-
+        db.query(cartTable, function (err, result, fields) {
+            if (err) throw err;
+        });
         db.query(query, function (err, result, fields) {
             if (err) throw err;
         });
